@@ -1,0 +1,28 @@
+{
+  "name": "movie",
+  "version": "0.0.0",
+  "description": "movie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chilijung/fun.git"
+  },
+  "keywords": [
+    "movie"
+  ],
+  "author": "chilijung <chilijung@gmail.com> (http://lijung.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chilijung/movie/issues"
+  },
+  "homepage": "https://github.com/chilijung/movie",
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "js-beautify": "^1.5.4",
+    "node-stage": "^0.1.2",
+    "request": "^2.53.0"
+  }
+}
