@@ -18,7 +18,7 @@ var req_url = function(myurl) {
       $ = cheerio.load(body);
 
 
-      fs.appendFileSync('./tw_result.csv', field.join(', ') + '\n')
+      fs.appendFileSync('./tw_result.csv', field.join(',') + '\n')
 
       movies = $('.table_g tr'); //jquery get all tr
 
@@ -83,25 +83,24 @@ var req_url = function(myurl) {
 
                       console.log('------')
 
-                      ent_arr.push('"' + rank + '"');
-                      ent_arr.push('"' + last_w + '"');
-                      ent_arr.push('"' + tai_w + '"');
-                      ent_arr.push('"' + rate + '"');
-                      ent_arr.push('"' + accumulate + '"');
-                      ent_arr.push('"' + weeks + '"');
+                      ent_arr.push(rank);
+                      ent_arr.push(last_w);
+                      ent_arr.push(tai_w);
+                      ent_arr.push(rate);
+                      ent_arr.push(accumulate);
+                      ent_arr.push(weeks);
                       ent_arr.push('"' + href + '"');
-                      ent_arr.push('"' + name + '"');
-                      ent_arr.push('"' + env_name + '"');
-                      ent_arr.push('"' + utube + '"');
-                      ent_arr.push('"' + imdb.Runtime + '"')
+                      ent_arr.push(name);
+                      ent_arr.push(env_name);
+                      ent_arr.push(utube);
+                      ent_arr.push(imdb.Runtime)
                       ent_arr.push('"' + imdb.Poster + '"')
-                      ent_arr.push('"' + imdb.Released + '"')
-                      // ent_arr.push('"' + imdb.Plot + '"')
-                      ent_arr.push('"' + imdb.imdbRating + '"')
+                      ent_arr.push(imdb.Released)
+                      ent_arr.push(imdb.imdbRating)
                       ent_arr.push('"' + imdb.imdbVotes + '"')
-                      ent_arr.push('"' + imdb.imdbID + '"')
+                      ent_arr.push(imdb.imdbID)
 
-                      var line = ent_arr.join(', ');
+                      var line = ent_arr.join(',');
 
                       fs.appendFileSync('./tw_result.csv', line + '\n');
                     }
