@@ -9,8 +9,8 @@ var field = ['排名', '上週', '台北週末', '增率', '累積新台幣', '�
 
 var myurl = 'http://tw.dorama.info/drama/d_box_office.php';
 
-if(fs.existsSync('./result.csv'))
-  fs.unlinkSync('./result.csv');
+if(fs.existsSync('./tw_result.csv'))
+  fs.unlinkSync('./tw_result.csv');
 
 var req_url = function(myurl) {
   request(myurl, function(err, resp, body){
@@ -18,7 +18,7 @@ var req_url = function(myurl) {
       $ = cheerio.load(body);
 
 
-      fs.appendFileSync('./result.csv', field.join(', ') + '\n')
+      fs.appendFileSync('./tw_result.csv', field.join(', ') + '\n')
 
       movies = $('.table_g tr'); //jquery get all tr
 
@@ -103,7 +103,7 @@ var req_url = function(myurl) {
 
                       var line = ent_arr.join(', ');
 
-                      fs.appendFileSync('./result.csv', line + '\n');
+                      fs.appendFileSync('./tw_result.csv', line + '\n');
                     }
                   })
                 }
