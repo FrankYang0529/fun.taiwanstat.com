@@ -14,14 +14,14 @@ var req_url = function(boxf, count, cb) {
   var boxf = boxf + year;
   console.log(boxf);
 
-  if(fs.existsSync('./' + year + '_result.csv'))
-    fs.unlinkSync('./' + year + '_result.csv');
+  if(fs.existsSync('./year/' + year + '_result.csv'))
+    fs.unlinkSync('./year/' + year + '_result.csv');
 
   request(boxf, function(err, resp, body){
     if (!err && resp.statusCode == 200) {
       $ = cheerio.load(body);
 
-      fs.appendFileSync('./' + year + '_result.csv', field.join(', ') + '\n')
+      fs.appendFileSync('./year/' + year + '_result.csv', field.join(', ') + '\n')
 
       movies = $('.sdt tbody tr'); //jquery get all tr
 
@@ -41,7 +41,7 @@ var req_url = function(boxf, count, cb) {
 
           }
         })
-        fs.appendFileSync('./' + year + '_result.csv', clip.join(', ') + '\n');
+        fs.appendFileSync('./year/' + year + '_result.csv', clip.join(', ') + '\n');
         cb();
       })
     }else {
