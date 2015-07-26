@@ -1,6 +1,7 @@
 var url = require('url');
 var fs = require('fs');
 var Q = require('q');
+var exec = Q.denodeify(require('child_process').exec)
 
 var request = require('request');
 var cheerio = require('cheerio');
@@ -42,6 +43,7 @@ request(myurl)
         var href = 'http://tw.dorama.info' + href;
       var name = average.next.next.next.next.next.next.next.next.children[1].children[1].children[0].children[1].children[0].data.trim();
     
+
       request(href)
       .then(function(mov_body) {
         $ = cheerio.load(mov_body[0].body);
@@ -53,49 +55,105 @@ request(myurl)
           .then(function(imdb_body) {
             var imdb = JSON.parse(imdb_body[0].body);
 
-            return request('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + name + '&key=AIzaSyCN7Fm5tDc3S1uIy1UPk9dURgYL3dreVmw')
-              .then(function(utube_body) {
-                var utube = utube_body[0].body;
+            if(imdb.Poster && imdb.Poster !== 'N/A') {
 
-                var utube = JSON.parse(utube).items[0].id.videoId;
+              var ext = '.' + imdb.Poster.split('.').pop();
+              return exec('wget -O ./posters/' + name + ext +' ' + imdb.Poster)
+                .then(function(result) {
+                  return request('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + name + '&key=AIzaSyCN7Fm5tDc3S1uIy1UPk9dURgYL3dreVmw')
+                    .then(function(utube_body) {
+                      var utube = utube_body[0].body;
 
-                console.log('####')
-                var ent_arr = [];
+                      var utube = JSON.parse(utube).items[0].id.videoId;
 
-                console.log(rank)
-                console.log(last_w)
-                console.log(tai_w)
-                console.log(rate)
-                console.log(accumulate)
-                console.log(weeks)
-                console.log(href)
-                console.log(name)
-                console.log(env_name)
+                      console.log('####')
+                      var ent_arr = [];
 
-                console.log('------')
+                      console.log(rank)
+                      console.log(last_w)
+                      console.log(tai_w)
+                      console.log(rate)
+                      console.log(accumulate)
+                      console.log(weeks)
+                      console.log(href)
+                      console.log(name)
+                      console.log(env_name)
 
-                ent_arr.push(rank);
-                ent_arr.push(last_w);
-                ent_arr.push(tai_w);
-                ent_arr.push(rate);
-                ent_arr.push(accumulate);
-                ent_arr.push(weeks);
-                ent_arr.push('"' + href + '"');
-                ent_arr.push(name);
-                ent_arr.push(env_name);
-                ent_arr.push(utube);
-                ent_arr.push(imdb.Runtime)
-                ent_arr.push('"' + imdb.Poster + '"')
-                ent_arr.push(imdb.Released)
-                ent_arr.push(imdb.imdbRating)
-                ent_arr.push('"' + imdb.imdbVotes + '"')
-                ent_arr.push(imdb.imdbID)
+                      console.log('------')
 
-                var line = ent_arr.join(',');
+                      ent_arr.push(rank);
+                      ent_arr.push(last_w);
+                      ent_arr.push(tai_w);
+                      ent_arr.push(rate);
+                      ent_arr.push(accumulate);
+                      ent_arr.push(weeks);
+                      ent_arr.push('"' + href + '"');
+                      ent_arr.push(name);
+                      ent_arr.push(env_name);
+                      ent_arr.push(utube);
+                      ent_arr.push(imdb.Runtime)
+                      ent_arr.push('"./posters/' + name + ext + '"')
+                      ent_arr.push(imdb.Released)
+                      ent_arr.push(imdb.imdbRating)
+                      ent_arr.push('"' + imdb.imdbVotes + '"')
+                      ent_arr.push(imdb.imdbID)
 
-                fs.appendFileSync('./tw_result.csv', line + '\n');
-              })
-              .done();
+                      var line = ent_arr.join(',');
+
+                      fs.appendFileSync('./tw_result.csv', line + '\n');
+                    })
+                    .done();
+
+                })
+                .done();
+
+            } else {
+              return request('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + name + '&key=AIzaSyCN7Fm5tDc3S1uIy1UPk9dURgYL3dreVmw')
+                .then(function(utube_body) {
+                  var utube = utube_body[0].body;
+
+                  var utube = JSON.parse(utube).items[0].id.videoId;
+
+                  console.log('####')
+                  var ent_arr = [];
+
+                  console.log(rank)
+                  console.log(last_w)
+                  console.log(tai_w)
+                  console.log(rate)
+                  console.log(accumulate)
+                  console.log(weeks)
+                  console.log(href)
+                  console.log(name)
+                  console.log(env_name)
+
+                  console.log('------')
+
+                  ent_arr.push(rank);
+                  ent_arr.push(last_w);
+                  ent_arr.push(tai_w);
+                  ent_arr.push(rate);
+                  ent_arr.push(accumulate);
+                  ent_arr.push(weeks);
+                  ent_arr.push('"' + href + '"');
+                  ent_arr.push(name);
+                  ent_arr.push(env_name);
+                  ent_arr.push(utube);
+                  ent_arr.push(imdb.Runtime)
+                  ent_arr.push('"undefined"')
+                  ent_arr.push(imdb.Released)
+                  ent_arr.push(imdb.imdbRating)
+                  ent_arr.push('"' + imdb.imdbVotes + '"')
+                  ent_arr.push(imdb.imdbID)
+
+                  var line = ent_arr.join(',');
+
+                  fs.appendFileSync('./tw_result.csv', line + '\n');
+                })
+                .done();
+            }
+
+            
           })
           .done();
       })
