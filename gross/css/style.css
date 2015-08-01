@@ -1,0 +1,27 @@
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis {
+	width: 100px;
+}
+
+.x.axis path {
+  display: none;
+}  
+
+.circ {
+	opacity: 0.2;
+	fill: red;
+}
+
+.tick {
+	font-size: 15px;
+}
