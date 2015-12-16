@@ -7,7 +7,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var stage = require('node-stage');
 var beautify = require('js-beautify').js_beautify;
-var field = ['rank', 'last_week', 'tw_this_week', 'increase', 'total', 'weeks', 'link', 'name', 'en_name', 'Youtube', 'time', 'poster', 'release_date', 'IMDB', 'IMDB_vote', 'imdb_ID'];
+var field = ['rank', 'last_week', 'tw_this_week', 'increase', 'total', 'weeks', 'intro', 'title', 'en_title', 'youtube', 'time', 'poster', 'release_date', 'IMDB', 'IMDB_vote', 'imdb_ID'];
 
 var myurl = 'http://tw.dorama.info/drama/d_box_office.php';
 var request = Q.denodeify(request);
@@ -78,7 +78,7 @@ request(myurl)
                       console.log(name)
                       console.log(env_name)*/
 
-                      console.log(name)
+                      console.log(name, imdb.Poster);
 
                       ent_arr.push(rank);
                       ent_arr.push(last_w);
@@ -119,20 +119,9 @@ request(myurl)
 
                   var utube = JSON.parse(utube).items[0].id.videoId;
 
-                  console.log('####')
                   var ent_arr = [];
 
-                  console.log(rank)
-                  console.log(last_w)
-                  console.log(tai_w)
-                  console.log(rate)
-                  console.log(accumulate)
-                  console.log(weeks)
-                  console.log(href)
                   console.log(name)
-                  console.log(env_name)
-
-                  console.log('------')
 
                   ent_arr.push(rank);
                   ent_arr.push(last_w);
@@ -145,7 +134,7 @@ request(myurl)
                   ent_arr.push(env_name);
                   ent_arr.push(utube);
                   ent_arr.push(imdb.Runtime)
-                  ent_arr.push('"undefined"')
+                  ent_arr.push(imdb.Poster)
                   ent_arr.push(imdb.Released)
                   ent_arr.push(imdb.imdbRating)
                   ent_arr.push('"' + imdb.imdbVotes + '"')

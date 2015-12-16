@@ -21,6 +21,7 @@
   "homepage": "https://github.com/chilijung/movie",
   "dependencies": {
     "cheerio": "^0.18.0",
+    "csvjson": "^1.0.5",
     "js-beautify": "^1.5.4",
     "node-stage": "^0.1.2",
     "q": "^1.4.1",
