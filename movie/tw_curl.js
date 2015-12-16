@@ -7,7 +7,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var stage = require('node-stage');
 var beautify = require('js-beautify').js_beautify;
-var field = ['排名', '上週', '台北週末', '增率', '累積新台幣', '周次', '連結', '片名', '英文片名', 'Youtube', '時間', '海報', '上市', 'IMDB', 'IMDB_vote', 'imdb_ID'];
+var field = ['rank', 'last_week', 'tw_this_week', 'increase', 'total', 'weeks', 'link', 'name', 'en_name', 'Youtube', 'time', 'poster', 'release_date', 'IMDB', 'IMDB_vote', 'imdb_ID'];
 
 var myurl = 'http://tw.dorama.info/drama/d_box_office.php';
 var request = Q.denodeify(request);
@@ -66,10 +66,9 @@ request(myurl)
 
                       var utube = JSON.parse(utube).items[0].id.videoId;
 
-                      console.log('####')
                       var ent_arr = [];
 
-                      console.log(rank)
+                      /*console.log(rank)
                       console.log(last_w)
                       console.log(tai_w)
                       console.log(rate)
@@ -77,9 +76,9 @@ request(myurl)
                       console.log(weeks)
                       console.log(href)
                       console.log(name)
-                      console.log(env_name)
+                      console.log(env_name)*/
 
-                      console.log('------')
+                      console.log(name)
 
                       ent_arr.push(rank);
                       ent_arr.push(last_w);
@@ -92,7 +91,7 @@ request(myurl)
                       ent_arr.push(env_name);
                       ent_arr.push(utube);
                       ent_arr.push(imdb.Runtime)
-                      ent_arr.push('"./posters/' + name + ext + '"')
+                      ent_arr.push(imdb.Poster); //'"./posters/' + name + ext + '"')
                       ent_arr.push(imdb.Released)
                       ent_arr.push(imdb.imdbRating)
                       ent_arr.push('"' + imdb.imdbVotes + '"')
@@ -102,10 +101,16 @@ request(myurl)
 
                       fs.appendFileSync('./tw_result.csv', line + '\n');
                     })
-                    .done();
+                    .catch(function(error) {
+                      console.log(error);
+                    })
+                    .done()
 
                 })
-                .done();
+                .catch(function(error) {
+                  console.log(error);
+                })
+                .done()
 
             } else {
               return request('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + name + '&key=AIzaSyCN7Fm5tDc3S1uIy1UPk9dURgYL3dreVmw')
